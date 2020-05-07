@@ -23,13 +23,27 @@ closeAuth = document.querySelector('.close-auth'),
 logInForm = document.querySelector('#logInForm'),
 loginInput = document.querySelector('#login'),
 userName = document.querySelector('.user-name'),
-buttonOut = document.querySelector('.button-out');
+buttonOut = document.querySelector('.button-out'),
+containerPromo = document.querySelector('.container-promo'),
+restaurants = document.querySelector('.restaurants'),
+menu = document.querySelector('.menu');
 
 let login = localStorage.getItem('gloDelivery');
+
+const valid = function(str) {
+  const nameReg = /^[a-zA-Z][a-zA-Z0-9-_\.]{1-20}$/;
+  return nameReg.test(str);
+};
 
 const toggleModalAuth = () => {
   loginInput.style.borderColor = '';
   modalAuth.classList.toggle('is-open');
+};
+
+const returnMain = () => {
+  containerPromo.classList.remove('hide');
+  restaurants.classList.remove('hide');
+  menu.classList.add('hide');
 };
 
 const authorized = () =>  {
@@ -44,6 +58,7 @@ const authorized = () =>  {
     buttonOut.removeEventListener('click', logOut);
 
     checkAuth();
+    returnMain();
   };
   userName.textContent = login;
 
@@ -69,7 +84,8 @@ const notAuthorized = () => {
       logInForm.reset();
       checkAuth();
     } else {
-      loginInput.style.borderColor = 'red';
+      loginInput.style.borderColor = 'tomato';
+      loginInput.value = '';
     }
   };
 
@@ -179,3 +195,12 @@ const outputRestorane = () => {
 };
 
 outputRestorane();
+
+const initSwiper = () => {
+  new Swiper('.swiper-container', {
+    loop: true,
+    autoplay: true
+  });
+};
+
+initSwiper();
