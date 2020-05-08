@@ -16,7 +16,11 @@ const cardsRestaurants = document.querySelector('.cards-restaurants'),
   restaurants = document.querySelector('.restaurants'),
   menu = document.querySelector('.menu'),
   logo = document.querySelector('.logo'),
-  cardsMenu = document.querySelector('.cards-menu');
+  cardsMenu = document.querySelector('.cards-menu'),
+  restaurantTitle = document.querySelector('.restaurant-title'),
+  rating = document.querySelector('.rating'),
+  minPrice = document.querySelector('.price'),
+  category = document.querySelector('.category');
 
 
 let login = localStorage.getItem('gloDelivery');
@@ -116,7 +120,7 @@ checkAuth();
 function createCardRestaurant({ image, price, name, kitchen, stars, products, time_of_delivery: timeOfDelivery }) {
 
   const card = `
-    <a class="card card-restaurant" data-products="${products}">
+    <a class="card card-restaurant" data-products="${products}" data-info="${[name, price, stars, kitchen]}">
       <img src="${image}" alt="${name}" class="card-image"/>
       <div class="card-text">
         <div class="card-heading">
@@ -170,11 +174,19 @@ function openGoods(event) {
   if(restaurant){
     
     if(login) {
+      const info = restaurant.dataset.info.split(',');
+      const [ name, price, stars, kitchen ] = info;
+
       cardsMenu.textContent = '';
 
       containerPromo.classList.add('hide');
       restaurants.classList.add('hide');
       menu.classList.remove('hide');
+
+      restaurantTitle.textContent = name;
+      rating.textContent = stars;
+      minPrice.textContent = `от ${price} ₽`;
+      category.textContent = kitchen;
 
       getData(`./db/${restaurant.dataset.products}`).then((data) => {
         data.forEach(createCardGood);
