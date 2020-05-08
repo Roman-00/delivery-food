@@ -33,6 +33,18 @@ let login = localStorage.getItem('gloDelivery');
 
 const cart = [];
 
+const loadCart = function() {
+  if(localStorage.getItem(login)) {
+    JSON.parse(localStorage.getItem(login)).forEach(function(item){
+      cart.push(item);
+    });
+  }
+};
+
+const saveCart =  function () {
+  localStorage.setItem('glocartMagazine', JSON.stringify(cart));
+};
+
 const getData = async (url) => {
   const response = await fetch(url);
 
@@ -70,6 +82,7 @@ closeAuth.addEventListener('click', toggleModalAuth);
 function authorized() {
   function logOut() {
     login = null;
+    cart.length = 0;
     localStorage.removeItem('gloDelivery');
     buttonAuth.style.display = '';
     userName.style.display = '';
@@ -89,6 +102,8 @@ function authorized() {
   cartButton.style.display = 'flex';
 
   buttonOut.addEventListener('click', logOut);
+
+  loadCart();
 }
 
 function notAuthorized() {
@@ -234,6 +249,7 @@ function addToCart(event) {
       });
     }
   }
+  saveCart();
 }
 
 function renderCart() {
@@ -283,6 +299,7 @@ function changeCount(event) {
 
     renderCart();
   }
+  saveCart();
 }
 
 function init() {
